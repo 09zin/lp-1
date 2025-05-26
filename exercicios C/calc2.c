@@ -81,13 +81,14 @@ double MyRateExpr (const char* expressao){
     return numeros[nume_top];
 }
 
-int main (){
-    char calculo[num_max];
-    printf("calculadora funcional, operadores: +, -, *, / (sem parenteses)\n");
-    printf("digite o calculo a ser resolvido(ex: 5 + 17 - 2 * 4):");
-    fgets(calculo, num_max, stdin);
-    calculo[strcspn(calculo, "\n")] = '\0';
-    double result = MyRateExpr(calculo);
+int main (int argc, char *argv[]){
+    if (argc != 2){
+        printf("Uso correto: %s \"expressão\"\n", argv[0]);
+        printf("Exemplo: %s \"5 + 3 * 2 - 4\"\n", argv[0]);
+        return 1;
+    }
+    const char *expressao = argv[1];
+    double result = MyRateExpr(expressao);
     printf("o resultado e: %.2f\n", result);
 
     return 0;
