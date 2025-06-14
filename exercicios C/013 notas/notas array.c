@@ -7,8 +7,8 @@ void MyInit(int vetor[], int t){
 
 }
 
-void MyAnaliseNotas (int P[20], int notas[5]){
-    for (int i = 0; i < 20; i++){
+void MyAnaliseNotas (int P[20], int notas[5]){ 
+    for (int i = 0; i < 20; i++){ //count each value
         if (P[i] == 0){
             notas[0]++;
         }else if (P[i] == 1){
@@ -29,20 +29,17 @@ int main(){
     MyInit(notas, 5);
     MyInit(P, 20);
     for (int i = 0; i < 20; i++){
-        printf("qual a nota da %i° pessoa?(0-5): ", ++i);
+        printf("qual a nota da %i° pessoa?(0-5): ", ++i); 
         i--;
-        scanf("%i", &P[i]);
-        while(P[i] < 0 || P[i] > 5){
+        scanf("%i", &P[i]); //store each note
+        while(P[i] < 0 || P[i] > 5){ //asks again case its wrong
             printf("nota invalida por favor digite novamente: ");
             scanf("%i", &P[i]);
         }
     }
-    MyAnaliseNotas(P, notas);
-    printf("quantidade de notas 0: %i\n", notas[0]);
-    printf("quantidade de notas 1: %i\n", notas[1]);
-    printf("quantidade de notas 2: %i\n", notas[2]);
-    printf("quantidade de notas 3: %i\n", notas[3]);
-    printf("quantidade de notas 4: %i\n", notas[4]);
-    printf("quantidade de notas 5: %i\n", notas[5]);
+    MyAnaliseNotas(P, notas); //shows everything
+    for (int i = 0; i <= 5; i++){
+        printf("quantidade de notas %i: %i\n",i, notas[i]);
+    }
 return 0;
 }

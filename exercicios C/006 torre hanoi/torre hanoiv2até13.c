@@ -6,18 +6,18 @@ int main(){
 
     printf("quantos blocos?[3,4,5,6,7,8,9,10,11,12,13]:");
     scanf("%i", &blocos);
-    blocos = pow(2,blocos)-1;
+    blocos = pow(2,blocos)-1; //calc to discover how manys round will have based on the number of blocks
     for(numb; numb <blocos; numb++){
         rodadas = numb +1;
         printf("rodada %i -> ", rodadas);
-        if (numb %2 == 0){
+        if (numb %2 == 0){ //if its a pair round is the 1° block that moves always to 1 position more 
             printf ("bloco 1 torre: %i\n", b1);
             b1++;
             if (b1 == 4){
                 b1 = 1;
             }
         }
-        if (numb - auxb2 == 0){
+        if (numb - auxb2 == 0){ //from this point on the block that moves is picked using auxs thats grows based on the potency of 2 of the block, blocks pair goes always for less 1 position and unpair always for a 1 more position
             printf("bloco 2 torre: %i\n",b2);
             b2--;
             auxb2 += 4;

@@ -81,7 +81,7 @@ double MyRateExpr (const char* expressao){
     return numeros[nume_top];
 }
 
-int main (){
+int main (){ //não funciona
     char calculo[num_max];
     printf("calculadora funcional, operadores: +, -, *, / (sem parenteses)\n");
     printf("digite o calculo a ser resolvido(ex: 5 + 17 - 2 * 4):");

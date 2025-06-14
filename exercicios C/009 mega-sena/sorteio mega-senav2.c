@@ -49,14 +49,14 @@ int main (){
         }
         printf("\n");
         int acerto = 1;
-        for (i = 0; i < numerossorteados; i++){
+        for (i = 0; i < numerossorteados; i++){ //if 1 of the numbers is wrong then the "acerto" is fake and is ramdomize again, if all is correct them the for is breaked
             if (numeros[i] != numerosescolhidos[i]){
                 acerto = 0;
                 break;
             }
         }
         if (acerto) break;
-    }while (rodada < 10000000);
+    }while (rodada > -1);
     printf ("PARABENS!!!!!, os numeros foram acertados em %i tentativas\n", rodada);
     return 0;
 }

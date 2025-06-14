@@ -12,7 +12,7 @@ int main (){
     limitegnv = precoGASO * 0.6f; // compensa se for menor que 60% da gasolina
     if (precoe <= limitee + 0.0001f && precognv <= limitegnv + 0.0001f){
         printf("tando etanol quanto GNV são mais eficientes que a gasolina\n");
-    } else if (precoe <= limitee + 0.0001f){
+    } else if (precoe <= limitee + 0.0001f){ //para evitar erros com a precisão de float
         printf("apenas o etanol é mais eficiente que a gasolina\n");
     } else if (precognv <= limitegnv + 0.0001f){
         printf("apenas o GNV é mais eficiente que a gasolina\n");
