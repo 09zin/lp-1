@@ -1,0 +1,145 @@
+START
+
+DEFINE maxletters = 11
+DEFINE number_words = 7
+
+DECLARE answer : CHARACTER
+DECLARE user_guess[number_words][maxletters] : CHARACTER ARRAY
+DECLARE correct[number_words][maxletters] : CHARACTER ARRAY
+DECLARE display_word[number_words][maxletters] : CHARACTER ARRAY
+DECLARE hits : INTEGER = 0
+
+CALL MyWords(correct)
+
+CALL MyInit(display_word, correct)
+
+PRINT "\tCROSSWORD GAME\n\n"
+
+FOR i FROM 0 TO number_words - 1
+    PRINT "number of letters ", i+1, "° word:", STRLEN(correct[i]), "\n"
+END FOR
+
+PRINT "wanna a tip before try a shot?[Y/N]:"
+READ answer
+CLEAR INPUT BUFFER
+
+IF answer IS 'Y' OR answer IS 'y' THEN
+    CALL MyTip(answer)
+END IF
+
+CLEAR SCREEN
+
+SET hits = CALL MyGuesses(user_guess, correct, display_word)
+CALL MyDisplay(hits, display_word)
+
+IF hits IS EQUAL TO number_words THEN
+    PRINT "Congratulations!!!! you won\n"
+    EXIT PROGRAM
+END IF
+
+PRINT "try again?[y/n]:"
+READ answer
+CLEAR INPUT BUFFER
+
+IF answer IS 'n' OR answer IS 'N' THEN
+    EXIT PROGRAM
+END IF
+
+DO
+    CLEAR SCREEN
+
+    CALL MyDisplay(hits, display_word)
+
+    PRINT "wanna see the tips?[Y/N]:"
+    READ answer
+
+    IF answer IS 'Y' OR answer IS 'y' THEN
+        CALL MyTip(answer)
+    END IF
+
+    SET hits = CALL MyGuesses(user_guess, correct, display_word)
+    CALL MyDisplay(hits, display_word)
+
+    IF hits IS EQUAL TO number_words THEN
+        PRINT "Congratulations!!!! you won\n"
+        EXIT PROGRAM
+    END IF
+
+    PRINT "try again?[y/n]:"
+    READ answer
+    CLEAR INPUT BUFFER
+WHILE answer IS 'Y' OR answer IS 'y'
+
+END
+
+FUNCTION MyTip (answer : CHARACTER)
+    PRINT "1° word, want VERY MUCH\n2° word, NOT past\n3° word, the opssite of lowerest\n"
+    PRINT "4° word, classsic music instrument\n 5° word, its a very pretty view\n"
+    PRINT "6° word, every good history has\n 7° word, you can see yourself on it\n"
+    DO
+        PRINT "continue to the guess?[y/n]:"
+        READ answer
+        CLEAR INPUT BUFFER
+    WHILE answer IS NOT 'y' AND answer IS NOT 'Y'
+END FUNCTION
+
+FUNCTION MyToLower (user_guess : CHARACTER ARRAY)
+    FOR i FROM 0 TO number_words - 1
+        FOR j FROM 0 WHILE user_guess[i][j] IS NOT '\0'
+            SET user_guess[i][j] = TO_LOWER(user_guess[i][j])
+        END FOR
+    END FOR
+END FUNCTION
+
+FUNCTION MyInit (display_word : CHARACTER ARRAY, correct : CHARACTER ARRAY)
+    FOR i FROM 0 TO number_words - 1
+        DECLARE len = STRLEN(correct[i])
+        FOR j FROM 0 TO len - 1
+            SET display_word[i][j] = '?'
+        END FOR
+        SET display_word[i][len] = '\0'
+    END FOR
+END FUNCTION
+
+FUNCTION MyDisplay (hits : INTEGER, display_word : CHARACTER ARRAY)
+    PRINT "corrects words = ", hits, "\n"
+    FOR i FROM 0 TO number_words - 1
+        PRINT i + 1, "° word: ", display_word[i], "\n"
+    END FOR
+END FUNCTION
+
+FUNCTION MyWords (correct : CHARACTER ARRAY)
+    COPY "craving" TO correct[0]
+    COPY "present" TO correct[1]
+    COPY "highest" TO correct[2]
+    COPY "piano" TO correct[3]
+    COPY "sunset" TO correct[4]
+    COPY "adventure" TO correct[5]
+    COPY "mirror" TO correct[6]
+END FUNCTION
+
+FUNCTION MyGuesses (user_guess : CHARACTER ARRAY, correct : CHARACTER ARRAY, display_word : CHARACTER ARRAY)
+    DECLARE corrects_words : INTEGER = 0
+    FLUSH STDIN
+    FOR i FROM 0 TO number_words - 1
+        PRINT i + 1, "° word guess: "
+        READ user_guess[i]
+        REMOVE NEWLINE FROM user_guess[i]
+    END FOR
+    CALL MyToLower(user_guess)
+
+    FOR j FROM 0 TO number_words - 1
+        DECLARE correct_word : BOOLEAN = TRUE
+        FOR i FROM 0 WHILE correct[j][i] IS NOT '\0'
+            IF correct[j][i] IS EQUAL TO user_guess[j][i] THEN
+                SET display_word[j][i] = user_guess[j][i]
+            ELSE
+                SET correct_word = FALSE
+            END IF
+        END FOR
+        IF correct_word IS TRUE THEN
+            INCREMENT corrects_words
+        END IF
+    END FOR
+    RETURN corrects_words
+END FUNCTION

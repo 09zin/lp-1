@@ -1,0 +1,145 @@
+INÍCIO
+
+DEFINIR max_letras = 11
+DEFINIR numero_palavras = 7
+
+DECLARAR resposta : CARACTERE
+DECLARAR palpite_usuario[numero_palavras][max_letras] : VETOR DE CARACTERES
+DECLARAR correto[numero_palavras][max_letras] : VETOR DE CARACTERES
+DECLARAR palavra_exibida[numero_palavras][max_letras] : VETOR DE CARACTERES
+DECLARAR acertos : INTEIRO = 0
+
+CHAMAR MinhasPalavras(correto)
+
+CHAMAR MeuInicio(palavra_exibida, correto)
+
+IMPRIMIR "\tJOGO DE PALAVRAS CRUZADAS\n\n"
+
+PARA i DE 0 ATÉ numero_palavras - 1
+    IMPRIMIR "número de letras ", i+1, "ª palavra:", COMPRIMENTO(correto[i]), "\n"
+FIM PARA
+
+IMPRIMIR "quer uma dica antes de tentar?[S/N]:"
+LER resposta
+LIMPAR_BUFFER_ENTRADA
+
+SE resposta É 'S' OU resposta É 's' ENTÃO
+    CHAMAR MinhaDica(resposta)
+FIM SE
+
+LIMPAR_TELA
+
+DEFINIR acertos = CHAMAR MeusPalpites(palpite_usuario, correto, palavra_exibida)
+CHAMAR MinhaExibicao(acertos, palavra_exibida)
+
+SE acertos É IGUAL A numero_palavras ENTÃO
+    IMPRIMIR "Parabéns!!!! você venceu\n"
+    SAIR_PROGRAMA
+FIM SE
+
+IMPRIMIR "tentar novamente?[s/n]:"
+LER resposta
+LIMPAR_BUFFER_ENTRADA
+
+SE resposta É 'n' OU resposta É 'N' ENTÃO
+    SAIR_PROGRAMA
+FIM SE
+
+FAÇA
+    LIMPAR_TELA
+
+    CHAMAR MinhaExibicao(acertos, palavra_exibida)
+
+    IMPRIMIR "quer ver as dicas?[S/N]:"
+    LER resposta
+
+    SE resposta É 'S' OU resposta É 's' ENTÃO
+        CHAMAR MinhaDica(resposta)
+    FIM SE
+
+    DEFINIR acertos = CHAMAR MeusPalpites(palpite_usuario, correto, palavra_exibida)
+    CHAMAR MinhaExibicao(acertos, palavra_exibida)
+
+    SE acertos É IGUAL A numero_palavras ENTÃO
+        IMPRIMIR "Parabéns!!!! você venceu\n"
+        SAIR_PROGRAMA
+    FIM SE
+
+    IMPRIMIR "tentar novamente?[s/n]:"
+    LER resposta
+    LIMPAR_BUFFER_ENTRADA
+ENQUANTO resposta É 'S' OU resposta É 's'
+
+FIM
+
+FUNÇÃO MinhaDica (resposta : CARACTERE)
+    IMPRIMIR "1ª palavra, quer MUITO\n2ª palavra, NÃO passado\n3ª palavra, o oposto de mais baixo\n"
+    IMPRIMIR "4ª palavra, instrumento musical clássico\n 5ª palavra, é uma vista muito bonita\n"
+    IMPRIMIR "6ª palavra, toda boa história tem\n 7ª palavra, você pode se ver nela\n"
+    FAÇA
+        IMPRIMIR "continuar para o palpite?[s/n]:"
+        LER resposta
+        LIMPAR_BUFFER_ENTRADA
+    ENQUANTO resposta NÃO É 's' E resposta NÃO É 'S'
+FIM FUNÇÃO
+
+FUNÇÃO ParaMinusculas (palpite_usuario : VETOR DE CARACTERES)
+    PARA i DE 0 ATÉ numero_palavras - 1
+        PARA j DE 0 ENQUANTO palpite_usuario[i][j] NÃO É '\0'
+            DEFINIR palpite_usuario[i][j] = PARA_MINUSCULAS(palpite_usuario[i][j])
+        FIM PARA
+    FIM PARA
+FIM FUNÇÃO
+
+FUNÇÃO MeuInicio (palavra_exibida : VETOR DE CARACTERES, correto : VETOR DE CARACTERES)
+    PARA i DE 0 ATÉ numero_palavras - 1
+        DECLARAR comp = COMPRIMENTO(correto[i])
+        PARA j DE 0 ATÉ comp - 1
+            DEFINIR palavra_exibida[i][j] = '?'
+        FIM PARA
+        DEFINIR palavra_exibida[i][comp] = '\0'
+    FIM PARA
+FIM FUNÇÃO
+
+FUNÇÃO MinhaExibicao (acertos : INTEIRO, palavra_exibida : VETOR DE CARACTERES)
+    IMPRIMIR "palavras corretas = ", acertos, "\n"
+    PARA i DE 0 ATÉ numero_palavras - 1
+        IMPRIMIR i + 1, "ª palavra: ", palavra_exibida[i], "\n"
+    FIM PARA
+FIM FUNÇÃO
+
+FUNÇÃO MinhasPalavras (correto : VETOR DE CARACTERES)
+    COPIAR "craving" PARA correto[0]
+    COPIAR "present" PARA correto[1]
+    COPIAR "highest" PARA correto[2]
+    COPIAR "piano" PARA correto[3]
+    COPIAR "sunset" PARA correto[4]
+    COPIAR "adventure" PARA correto[5]
+    COPIAR "mirror" PARA correto[6]
+FIM FUNÇÃO
+
+FUNÇÃO MeusPalpites (palpite_usuario : VETOR DE CARACTERES, correto : VETOR DE CARACTERES, palavra_exibida : VETOR DE CARACTERES)
+    DECLARAR palavras_corretas : INTEIRO = 0
+    ESVAZIAR_ENTRADA
+    PARA i DE 0 ATÉ numero_palavras - 1
+        IMPRIMIR i + 1, "ª palpite de palavra: "
+        LER palpite_usuario[i]
+        REMOVER_QUEBRA_LINHA DE palpite_usuario[i]
+    FIM PARA
+    CHAMAR ParaMinusculas(palpite_usuario)
+
+    PARA j DE 0 ATÉ numero_palavras - 1
+        DECLARAR palavra_acertada : BOOLEANO = VERDADEIRO
+        PARA i DE 0 ENQUANTO correto[j][i] NÃO É '\0'
+            SE correto[j][i] É IGUAL A palpite_usuario[j][i] ENTÃO
+                DEFINIR palavra_exibida[j][i] = palpite_usuario[j][i]
+            SENÃO
+                DEFINIR palavra_acertada = FALSO
+            FIM SE
+        FIM PARA
+        SE palavra_acertada É VERDADEIRO ENTÃO
+            INCREMENTAR palavras_corretas
+        FIM SE
+    FIM PARA
+    RETORNAR palavras_corretas
+FIM FUNÇÃO
