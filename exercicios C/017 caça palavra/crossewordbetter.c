@@ -61,9 +61,13 @@ int MyGuesses (char user_guess[number_words][maxletters], char correct[number_wo
     int corrects_words = 0;
     fflush(stdin);
     for (int i = 0; i < number_words; i++){
-    printf("%i° word guess: ", i + 1); //read all the guesses of the player 
-    fgets (user_guess[i], maxletters, stdin);
-    user_guess[i][strcspn(user_guess[i], "\n")] = 0; //remove the "\n" of the string to avoid problens
+        if (strcmp(display_word[i], correct[i]) == 0){
+            printf("word number %i is already correct!\n", i + 1);
+        }else{
+            printf("%i° word guess: ", i + 1); //read all the guesses of the player 
+            fgets (user_guess[i], maxletters, stdin);
+            user_guess[i][strcspn(user_guess[i], "\n")] = 0; //remove the "\n" of the string to avoid problens
+        } 
     }
     MyToLower(user_guess); //uses the fuction to put all in lower case
 
